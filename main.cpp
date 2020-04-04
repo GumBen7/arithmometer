@@ -1,12 +1,15 @@
 #include <iostream>
+#include <list>
 
 #include "Parser.h"
+#include "Algorithms.h"
 
 using namespace std;
 
 int main() {
-	for (auto t : Parser::parseExp(cin)) {
-		cout << t << endl;
+	list<string> exp = Parser::parseExp(cin);
+	for (auto s : Algorithms::getExpInRPN(exp)) {
+		cout << s << endl;
 	}
 	return 0;
 }
