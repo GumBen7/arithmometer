@@ -1,8 +1,14 @@
 #include "Parser.h"
 
+const string Parser::UNEXPECTED_SYMB_ERROR = "ERROR unexpected symbol/at: ";
+const string Parser::EXPECTED_ERROR_LINE = "expected ";
+const string Parser::RIGHT_PARENTH_LACKS_ERROR = "ERROR lacks of right parentheses";
+const string Parser::PENDING_NUMBER_ERROR = "ERROR lacks of number";
+
 list<string> Parser::parseExp(istream& is) {
 	list<string> exp;
 	char c;
+	streamsize i = 0;
 	bool isNumbGen = false;
 	bool isPendingNumb = true;
 	bool isPendingPoint = false;
@@ -12,7 +18,9 @@ list<string> Parser::parseExp(istream& is) {
 		if (!isspace(c) || (isNumbGen && !isPendingNumb)) { // skipping spaces
 			if (c == '(' || c == ')') {
 				if (c == ')' && openBrackets <= 0) {
-					cerr << "unable to close brackets";
+					stringstream ss;
+					ss << UNEXPECTED_SYMB_ERROR << '\'' << c << "'/[" << i << "]; " << EXPECTED_ERROR_LINE << "'(' earlier";					
+					throw range_error(ss.str());
 				}
 				else {
 					if (c == '(' && isPendingNumb) {
@@ -29,8 +37,9 @@ list<string> Parser::parseExp(istream& is) {
 						}
 					}
 					else {
-						cerr << "unexpected " << c;
-						exit(EXIT_FAILURE);
+						stringstream ss;
+						ss << UNEXPECTED_SYMB_ERROR << '\'' << c << "\'/[" << i << "]; " << EXPECTED_ERROR_LINE << "operator";
+						throw range_error(ss.str());
 					}
 					exp.push_back(string(1, c));
 				}
@@ -49,18 +58,22 @@ list<string> Parser::parseExp(istream& is) {
 						isPendingNumb = false;
 					}
 					else {
-						cerr << "non digit found: " << c;
-						exit(EXIT_FAILURE);
+						stringstream ss;
+						ss << UNEXPECTED_SYMB_ERROR << '\'' << c << "\'/[" << i << "]";
+						throw range_error(ss.str());
 					}
 				}
 				else if (isNumbGen) {
 					if (isDigit(c) || isPoint(c)) {
-						if (!isPendingPoint) {
-							cerr << "unexpected point found";
-							exit(EXIT_FAILURE);
-						}
-						else {
-							isPendingPoint = false;
+						if (isPoint(c)) {
+							if (!isPendingPoint) {
+								stringstream ss;
+								ss << UNEXPECTED_SYMB_ERROR << '\'' << c << "\'/[" << i << "]";
+								throw range_error(ss.str());
+							}
+							else {
+								isPendingPoint = false;
+							}
 						}
 						token.push_back(c);
 					}
@@ -75,8 +88,9 @@ list<string> Parser::parseExp(istream& is) {
 						}
 					}
 					else {
-						cerr << "non digit found" << c;
-						exit(EXIT_FAILURE);
+						stringstream ss;
+						ss << UNEXPECTED_SYMB_ERROR << '\'' << c << "\'/[" << i << "]";
+						throw range_error(ss.str());
 					}
 				}
 				else {
@@ -85,20 +99,20 @@ list<string> Parser::parseExp(istream& is) {
 						isPendingNumb = true;
 					}
 					else {
-						cerr << "non operator found" << c;
-						exit(EXIT_FAILURE);
+						stringstream ss;
+						ss << UNEXPECTED_SYMB_ERROR << '\'' << c << "\'/[" << i << "]; " << EXPECTED_ERROR_LINE << "operator";
+						throw range_error(ss.str());
 					}
 				}
 			}
 		}
+		++i;
 	}
 	if (isPendingNumb && !exp.empty()) {
-		cerr << "pending number";
-		exit(EXIT_FAILURE);
+		throw range_error(PENDING_NUMBER_ERROR);
 	}
 	if (openBrackets > 0) {
-		cerr << "unclosed brackets";
-		exit(EXIT_FAILURE);
+		throw range_error(RIGHT_PARENTH_LACKS_ERROR);
 	}
 	if (isNumbGen) {
 		exp.push_back(token);

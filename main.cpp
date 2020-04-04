@@ -7,7 +7,12 @@
 using namespace std;
 
 int main() {
-	list<string> exp = Parser::parseExp(cin);
-	cout << Algorithms::calculateExp(exp);
+	try {
+		list<string> exp = Parser::parseExp(cin);
+		cout << Algorithms::calculateExp(exp);
+	}
+	catch (exception& e) {
+		cout << e.what();
+	}
 	return 0;
 }
