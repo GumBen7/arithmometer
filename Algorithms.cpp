@@ -4,7 +4,8 @@ list<string> Algorithms::getExpInRPN(const list<string>& exp) {
 	list<string> expInRPN;
 	stack<string> opStack;
 	for (auto s : exp) {
-		OperatorType type = Parser::getOperatorTypeByName(s);
+		OperatorType type;
+		type = Parser::getOperatorTypeByName(s);
 		if (type == OperatorType::NONE) {
 			expInRPN.push_back(s);
 		}
