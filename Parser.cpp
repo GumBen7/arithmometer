@@ -38,7 +38,7 @@ list<string> Parser::parseExp(istream& is) {
 			else if (c == '-' && !isNumbGen && isPendingNumb) {
 				isNumbGen = true;
 				isPendingPoint = true;
-				exp.push_back(string(1, NEGATIVE_FUNC_SIGN));
+				exp.push_back(string(1, (char)OperatorType::NEG));
 			}
 			else {
 				if (isPendingNumb) {
@@ -108,7 +108,7 @@ list<string> Parser::parseExp(istream& is) {
 }
 
 OperatorType Parser::getOperatorTypeByName(string name) {
-	if (name.compare(string(1, NEGATIVE_FUNC_SIGN)) == 0) {
+	if (name.compare(string(1, (char)OperatorType::NEG)) == 0) {
 		return OperatorType::NEG;
 	}
 	if (name.compare("(") == 0) {
@@ -118,10 +118,10 @@ OperatorType Parser::getOperatorTypeByName(string name) {
 		return OperatorType::RIGHT_PAR;
 	}
 	if (name.compare("+") == 0) {
-		return OperatorType::PLUS;
+		return OperatorType::ADD;
 	}
 	if (name.compare("-") == 0) {
-		return OperatorType::MIN;
+		return OperatorType::SUB;
 	}
 	if (name.compare("*") == 0) {
 		return OperatorType::MULT;

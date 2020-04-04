@@ -11,7 +11,6 @@ using namespace std;
 class Parser
 {
 private:
-	static const char NEGATIVE_FUNC_SIGN = '~';
 	static const char POINT_CHAR = '.';
 	static bool isDigit(char c);
 	static bool isPoint(char c);
