@@ -1,5 +1,7 @@
 #include "Algorithms.h"
 
+const string Algorithms::DIVISION_BY_ZERO_ERROR = "ERROR division by zero";
+
 list<string> Algorithms::getExpInRPN(const list<string>& exp) {
 	list<string> expInRPN;
 	stack<string> opStack;
@@ -79,6 +81,9 @@ double Algorithms::operate(OperatorType type, double op1, double op2) {
 		return op1 * op2;
 	}
 	else {
+		if (op2 == 0.) {
+			throw overflow_error(DIVISION_BY_ZERO_ERROR);
+		}
 		return op1 / op2;
 	}
 }

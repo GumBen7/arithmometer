@@ -16,10 +16,11 @@ private:
 	static const string RIGHT_PARENTH_LACKS_ERROR;
 	static const string PENDING_NUMBER_ERROR;
 	static const char POINT_CHAR = '.';
+	static char defPar;
 	static bool isDigit(char c);
 	static bool isPoint(char c);
 public:
-	static list<string> parseExp(istream& is); 
+	static list<string> parseExp(istream& is, char& c = defPar);
 	static OperatorType getOperatorTypeByName(string name);
 };
 

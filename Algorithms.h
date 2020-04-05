@@ -10,6 +10,8 @@ using namespace std;
 
 class Algorithms
 {
+private:
+	static const string DIVISION_BY_ZERO_ERROR;
 public:
 	static list<string> getExpInRPN(const list<string>& exp);
 	static double calculateRPN(const list<string>& rPN);

@@ -5,9 +5,9 @@ const string Parser::EXPECTED_ERROR_LINE = "expected ";
 const string Parser::RIGHT_PARENTH_LACKS_ERROR = "ERROR lacks of right parentheses";
 const string Parser::PENDING_NUMBER_ERROR = "ERROR lacks of number";
 
-list<string> Parser::parseExp(istream& is) {
+list<string> Parser::parseExp(istream& is, char& c) {
 	list<string> exp;
-	char c;
+	//char c;
 	streamsize i = 0;
 	bool isNumbGen = false;
 	bool isPendingNumb = true;
