@@ -7,27 +7,34 @@
 
 using namespace std;
 
+static const bool IS_LOGGING_DEF = true;
+
 int main() {
 	while (true) {
 		char c;
+		bool isLogging = IS_LOGGING_DEF;
+		int fieldWidth = Parser::FIELD_WIDTH_DEF;
 		list<string> exp;
-		cout << setprecision(10);
+		cout << setprecision(Parser::PRECISION_DEF);
 		cout << "Put down expression" << endl;
 		try {
 			exp = Parser::parseExp(cin, c);
 		}
 		catch (exception& e) {
-			cout << setw(60) << e.what() << endl;
+			cout << setw(fieldWidth) << e.what() << endl;
 			while (c != '\n') {  //skipping until endl
 				cin.get(c);
 			}
 		}
 		if (!exp.empty()) {
+			if (isLogging) {
+				cout << endl << setw(fieldWidth) << "Log" << endl;
+			}
 			try {
-				cout << setw(60) << "Result" << '\n' << setw(60) << Algorithms::calculateExp(exp) << endl;
+				cout << endl <<setw(fieldWidth) << "Result" << '\n' << setw(fieldWidth) << Algorithms::calculateExp(exp, isLogging) << endl;
 			}
 			catch (exception& e) {
-				cout << setw(60) << e.what() << endl;
+				cout << setw(fieldWidth) << e.what() << endl;
 			}
 		}
 	}

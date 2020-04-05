@@ -38,16 +38,23 @@ list<string> Algorithms::getExpInRPN(const list<string>& exp) {
 	return expInRPN;
 }
 
-double Algorithms::calculateRPN(const list<string>& rPN) {
+double Algorithms::calculateRPN(const list<string>& rPN, bool isLogging) {
 	stack<double> st;
+	int fieldWidth = Parser::FIELD_WIDTH_DEF;
 	for (auto s : rPN) {
 		OperatorType type = Parser::getOperatorTypeByName(s);
+		cout << setprecision(Parser::PRECISION_DEF);
 		if (type == OperatorType::NONE) {
 			st.push(stod(s));
 		}
 		else if (type == OperatorType::NEG) {
 			double operand = st.top();
 			st.pop();
+			if (isLogging) {
+				stringstream ss;
+				ss << "-" << operand;
+				cout << setw(fieldWidth) << ss.str() << endl;
+			}
 			st.push(operate(type, operand));
 		}
 		else {
@@ -55,6 +62,11 @@ double Algorithms::calculateRPN(const list<string>& rPN) {
 			st.pop();
 			double operand1 = st.top();
 			st.pop();
+			if (isLogging) {
+				stringstream ss;
+				ss << operand1 << " " << (char)type << " " << operand2;
+				cout << setw(fieldWidth) << ss.str() << endl;
+			}
 			st.push(operate(type, operand1, operand2));
 		}
 	}
@@ -63,8 +75,8 @@ double Algorithms::calculateRPN(const list<string>& rPN) {
 	return res;
 }
 
-double Algorithms::calculateExp(const list<string>& exp) {
-	return (calculateRPN(getExpInRPN(exp)));
+double Algorithms::calculateExp(const list<string>& exp, bool isLogging) {
+	return (calculateRPN(getExpInRPN(exp), isLogging));
 }
 
 double Algorithms::operate(OperatorType type, double op1, double op2) {

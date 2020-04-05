@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include <sstream>
 #include <string>
 #include <list>
@@ -20,6 +19,8 @@ private:
 	static bool isDigit(char c);
 	static bool isPoint(char c);
 public:
+	static const int PRECISION_DEF = 10;
+	static const int FIELD_WIDTH_DEF = 60;
 	static list<string> parseExp(istream& is, char& c = defPar);
 	static OperatorType getOperatorTypeByName(string name);
 };
